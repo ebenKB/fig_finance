@@ -18,7 +18,7 @@ const Event = () => {
       setLoading(true);
       const response = await loadEventsFromAPI(query.page, query.limit)
       dispatch(addEvents({
-        data: response.data.events,
+        data: [...events.data, ...response.data.events],
         meta: response.data.meta
       }));
       setLoading(false);

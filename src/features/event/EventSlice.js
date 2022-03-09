@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const eventSlice = createSlice({
   name: "event",
   initialState: {
-    data: [{title: "test"}, {title: "test 2", description: "lorem ipsum igitu"}],
+    data: [],
     meta: {
       page: 1,
       limit: 10,
