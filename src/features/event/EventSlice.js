@@ -5,7 +5,7 @@ export const eventSlice = createSlice({
   initialState: [{title: "test"}, {title: "test 2", description: "lorem ipsum igitu"}],
   reducers: {
     addEvents: (state, action)=> {
-      state = action.payload
+      return action.payload
     }
   }
 })
