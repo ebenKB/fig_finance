@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
 import { useSelector } from 'react-redux';
 
 import EventCard from '../../components/EventCard/EventCard';
 import { addEvents, selectEvents } from '../../features/event/EventSlice';
 import { useDispatch } from 'react-redux';
 import Loader from '../../components/Loader/Loader';
+import { loadEventsFromAPI } from '../../api/Event';
 
 const Event = () => {
   const events = useSelector(selectEvents);
@@ -16,8 +16,11 @@ const Event = () => {
   const loadEvents = async () => {
     try {
       setLoading(true);
-      const response = await Axios.get(`http://localhost:8080/event?page=${query.page}&limit=${query.limit}`);
-      dispatch(addEvents(response.data));
+      const response = await loadEventsFromAPI(query.page, query.limit)
+      dispatch(addEvents({
+        data: response.data.events,
+        meta: response.data.meta
+      }));
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -31,6 +34,15 @@ const Event = () => {
     })
   }
 
+  const checkIfCanLoadMore = () => {
+    return events.meta.total > (query.page * query.limit)
+  }
+
+
+  const getCountStats = () => {
+    const loaded = events.data.length;
+    return `${loaded} out of ${events.meta.total}`
+  }
   useEffect(() => {
     loadEvents();
   }, [query.page])
@@ -39,16 +51,21 @@ const Event = () => {
     <div className="">
       {loading ? <Loader text="Fetching events..."/> : null}
       <ul className="container md:mx-auto px-40 divide-y divide-gray-100">
-        {events.map((event) => (
+        {events.data.map((event) => (
           <EventCard event={event} key={event.id} />
         ))}
       </ul>
-      <div className="container md:mx-auto px-44 divide-y divide-gray-100 text-right">
-        <button 
-          className="border-2 border-slate-200 p-2 rounded"
-          onClick={handleLoadMore}
-        >Load more</button>
+      <div className="container md:mx-auto px-44 divide-y divide-gray-100">
+        Showing {getCountStats()} events
       </div>
+      {checkIfCanLoadMore() && (
+        <div className="container md:mx-auto px-44 divide-y divide-gray-100 text-right">
+          <button 
+            className="border-2 border-slate-200 p-2 rounded"
+            onClick={handleLoadMore}
+          >Load more</button>
+        </div>
+      )}
     </div>
   )
 }

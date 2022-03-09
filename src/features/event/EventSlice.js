@@ -2,11 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const eventSlice = createSlice({
   name: "event",
-  initialState: [{title: "test"}, {title: "test 2", description: "lorem ipsum igitu"}],
+  initialState: {
+    data: [{title: "test"}, {title: "test 2", description: "lorem ipsum igitu"}],
+    meta: {
+      page: 1,
+      limit: 10,
+    }
+  },
   reducers: {
     addEvents: (state, action)=> {
-      return action.payload
-    }
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
   }
 })
 

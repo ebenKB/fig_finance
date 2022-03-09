@@ -12,6 +12,7 @@ const EventCard = ({event}) => {
         {event.virtual ? "Virtual" : "Not Virtual"}
         <span> | {event.date ? event.date.split("T")[0] : event.date}</span>
       </p>
+      <p className="text-sm text-gray-500">{event.address}</p>
       <p className="text-sm text-gray-500">{event.description}</p>
     </div>
   </li>
