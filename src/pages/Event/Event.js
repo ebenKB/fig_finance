@@ -40,6 +40,8 @@ const Event = () => {
 
 
   const getCountStats = () => {
+    if(!events.meta.total) return 0;
+
     const loaded = events.data.length;
     return `${loaded} out of ${events.meta.total}`
   }
