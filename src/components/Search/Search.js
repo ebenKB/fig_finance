@@ -42,7 +42,7 @@ const Search = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} data-testid="form">
         <input 
           type="text" 
           name="search" 
@@ -50,6 +50,7 @@ const Search = () => {
           placeholder="Enter event to search"
           onChange={handleInputChange}
           value={search}
+          data-testid="search"
         />
           <button 
             className="text-white rounded ml-4" 
